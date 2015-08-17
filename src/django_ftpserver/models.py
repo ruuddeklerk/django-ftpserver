@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
 
-from .compat import get_user_model_path
+from .compat import get_user_model_path, get_username_field
 
 
 @python_2_unicode_compatible
@@ -51,7 +51,7 @@ class FTPUserAccount(models.Model):
             user = self.user
         except ObjectDoesNotExist:
             user = None
-        return user and user.username or ""
+        return user and getattr(user, get_username_field()) or ""
 
     def update_last_login(self, value=None):
         self.last_login = value or timezone.now()
